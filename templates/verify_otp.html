@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="auth-wrap">
+    <form class="glass-form otp-card" method="post">
+        <p class="eyebrow">Secure verification</p>
+        <h1>Verify OTP</h1>
+        <label>Email<input type="email" name="email" value="{{ email }}" required></label>
+        <label>6-digit OTP<input class="otp-input" name="otp" inputmode="numeric" maxlength="6" pattern="[0-9]{6}" required></label>
+        <button class="btn btn-primary full" type="submit"><i data-lucide="shield-check"></i>Verify</button>
+        <p class="form-note"><a href="{{ url_for('auth.forgot_password') }}">Resend OTP</a></p>
+    </form>
+</section>
+{% endblock %}
+

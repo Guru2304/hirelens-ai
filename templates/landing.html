@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="hero">
+    <canvas id="heroScene" class="hero-scene" aria-hidden="true"></canvas>
+    <div class="hero-content">
+        <p class="eyebrow">AI ATS Resume Screening Platform</p>
+        <h1>AI-Powered Resume Screening Platform</h1>
+        <p class="hero-subtitle">Just Upload and Find the Best Candidates</p>
+        <div class="hero-actions">
+            <a class="btn btn-primary btn-large" href="{{ url_for('auth.register') }}"><i data-lucide="sparkles"></i>Start Screening</a>
+            <a class="btn btn-ghost btn-large" href="{{ url_for('auth.login') }}">Login</a>
+        </div>
+    </div>
+    <div class="hero-product" aria-label="HireLens AI dashboard preview">
+        <div class="preview-top">
+            <span></span><span></span><span></span>
+            <strong>Live Candidate Ranking</strong>
+        </div>
+        <div class="score-ring">94%</div>
+        <div class="preview-bars">
+            <div style="--w: 92%"></div>
+            <div style="--w: 78%"></div>
+            <div style="--w: 64%"></div>
+        </div>
+        <div class="preview-row"><span>Priya Sharma</span><b>Excellent</b></div>
+        <div class="preview-row"><span>Arjun Mehta</span><b>Good</b></div>
+        <div class="preview-row"><span>Neha Rao</span><b>Shortlisted</b></div>
+    </div>
+</section>
+
+<section class="feature-grid">
+    <article class="feature">
+        <i data-lucide="brain-circuit"></i>
+        <h3>AI ATS Matching</h3>
+        <p>Weighted skills, semantic fit, experience, and bonus signals powered by pretrained NLP models.</p>
+    </article>
+    <article class="feature">
+        <i data-lucide="files"></i>
+        <h3>Multiple Resume Upload</h3>
+        <p>Parse PDF, DOCX, and image resumes with text extraction and OCR support.</p>
+    </article>
+    <article class="feature">
+        <i data-lucide="list-ordered"></i>
+        <h3>Smart Shortlisting</h3>
+        <p>Rank candidates high to low and shortlist the exact number of required openings.</p>
+    </article>
+    <article class="feature">
+        <i data-lucide="download"></i>
+        <h3>Export Reports</h3>
+        <p>Download all candidates or shortlisted talent as CSV and Excel reports.</p>
+    </article>
+</section>
+{% endblock %}
+

@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="page-head">
+    <div>
+        <p class="eyebrow">{{ job.role }}</p>
+        <h1>Screening Results</h1>
+        <p class="muted">{{ job.openings }} openings · Created {{ job.created_at.strftime('%d %b %Y, %I:%M %p') }}</p>
+    </div>
+    <div class="head-actions">
+        <a class="btn btn-ghost" href="{{ url_for('download_all_csv', job_id=job.id) }}"><i data-lucide="file-down"></i>All CSV</a>
+        <a class="btn btn-ghost" href="{{ url_for('download_all_excel', job_id=job.id) }}"><i data-lucide="sheet"></i>All Excel</a>
+        <a class="btn btn-primary" href="{{ url_for('download_shortlisted_excel', job_id=job.id) }}"><i data-lucide="badge-check"></i>Shortlisted Excel</a>
+    </div>
+</section>
+
+<section class="stats-grid">
+    <article class="stat"><span>Total Resumes Processed</span><strong>{{ stats.total_candidates }}</strong></article>
+    <article class="stat"><span>Required Openings</span><strong>{{ job.openings }}</strong></article>
+    <article class="stat"><span>Highest ATS Score</span><strong>{{ stats.highest }}%</strong></article>
+    <article class="stat"><span>Average ATS Score</span><strong>{{ stats.average }}%</strong></article>
+    <article class="stat"><span>Shortlisted Candidates</span><strong>{{ stats.shortlisted }}</strong></article>
+</section>
+
+<section class="panel">
+    <div class="section-title">
+        <h2>All Candidates</h2>
+        <div class="table-tools">
+            <input data-table-search="allCandidates" placeholder="Search candidates">
+            <select data-status-filter="allCandidates">
+                <option value="">All statuses</option>
+                <option>Excellent Match</option>
+                <option>Good Match</option>
+                <option>Moderate Match</option>
+                <option>Weak Match</option>
+            </select>
+        </div>
+    </div>
+    <div class="table-wrap">
+        <table id="allCandidates" class="premium-table">
+            <thead><tr><th>Candidate Name</th><th>Email</th><th>Phone</th><th>Skills</th><th>ATS %</th><th>Status</th></tr></thead>
+            <tbody>
+            {% for result in results %}
+                <tr data-status="{{ result.status }}">
+                    <td>{{ result.candidate.name }}</td>
+                    <td>{{ result.candidate.email or "Not found" }}</td>
+                    <td>{{ result.candidate.phone or "Not found" }}</td>
+                    <td>
+                        <div class="skill-cloud">
+                        {% for skill in result.candidate.skills|split_skills %}
+                            <span>{{ skill }}</span>
+                        {% endfor %}
+                        </div>
+                    </td>
+                    <td>
+                        <div class="score-cell"><span>{{ result.ats_score }}%</span><div class="progress"><i style="width: {{ result.ats_score }}%"></i></div></div>
+                    </td>
+                    <td><span class="badge badge-{{ result.status|lower|replace(' ', '-') }}">{{ result.status }}</span></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<section class="panel">
+    <div class="section-title">
+        <h2>Shortlisted Candidates</h2>
+        <div class="head-actions compact">
+            <a class="btn btn-ghost" href="{{ url_for('download_shortlisted_csv', job_id=job.id) }}"><i data-lucide="file-down"></i>CSV</a>
+            <a class="btn btn-ghost" href="{{ url_for('download_shortlisted_excel', job_id=job.id) }}"><i data-lucide="sheet"></i>Excel</a>
+        </div>
+    </div>
+    <div class="table-wrap">
+        <table class="premium-table">
+            <thead><tr><th>Rank</th><th>Candidate Name</th><th>Email</th><th>ATS %</th><th>Key Skills</th><th>Status</th></tr></thead>
+            <tbody>
+            {% for item in shortlisted %}
+                <tr>
+                    <td><strong>#{{ item.rank }}</strong></td>
+                    <td>{{ item.candidate.name }}</td>
+                    <td>{{ item.candidate.email or "Not found" }}</td>
+                    <td>{{ item.ats_result.ats_score }}%</td>
+                    <td>{{ item.candidate.skills }}</td>
+                    <td><span class="badge badge-{{ item.ats_result.status|lower|replace(' ', '-') }}">{{ item.ats_result.status }}</span></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+{% endblock %}
+

@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="page-head">
+    <div>
+        <p class="eyebrow">Account-specific history</p>
+        <h1>Previous Screening History</h1>
+        <p class="muted">Every session is scoped to your recruiter account.</p>
+    </div>
+    <a class="btn btn-primary" href="{{ url_for('new_screening') }}"><i data-lucide="plus"></i>New Screening</a>
+</section>
+
+<section class="panel">
+    {% if jobs %}
+    <div class="table-wrap">
+        <table class="premium-table">
+            <thead><tr><th>Job Role</th><th>Created Date</th><th>Total Candidates</th><th>Shortlisted Count</th><th>Highest ATS Score</th><th></th></tr></thead>
+            <tbody>
+            {% for job in jobs %}
+                {% set s = stats_by_job[job.id] %}
+                <tr>
+                    <td>{{ job.role }}</td>
+                    <td>{{ job.created_at.strftime('%d %b %Y') }}</td>
+                    <td>{{ s.total_candidates }}</td>
+                    <td>{{ s.shortlisted }}</td>
+                    <td>{{ s.highest }}%</td>
+                    <td><a class="btn btn-ghost compact-btn" href="{{ url_for('results', job_id=job.id) }}">View Results</a></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+        <div class="empty-state">
+            <i data-lucide="folder-clock"></i>
+            <h3>No screening history</h3>
+            <p>Completed screening sessions will appear here.</p>
+        </div>
+    {% endif %}
+</section>
+{% endblock %}
+

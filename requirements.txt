@@ -1,0 +1,17 @@
+Flask
+Flask-SQLAlchemy
+Flask-Login
+Flask-Mail
+python-dotenv
+Werkzeug
+PyMuPDF
+python-docx
+pytesseract
+Pillow
+spacy
+sentence-transformers
+scikit-learn
+pandas
+openpyxl
+gunicorn
+

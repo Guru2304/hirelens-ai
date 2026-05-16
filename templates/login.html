@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="auth-wrap">
+    <form class="glass-form" method="post">
+        <p class="eyebrow">Welcome back</p>
+        <h1>Login to HireLens AI</h1>
+        <label>Email<input type="email" name="email" required autocomplete="email"></label>
+        <label>Password<input type="password" name="password" required autocomplete="current-password"></label>
+        <label class="check-row"><input type="checkbox" name="remember">Remember Me</label>
+        <button class="btn btn-primary full" type="submit"><i data-lucide="log-in"></i>Login</button>
+        <div class="form-links">
+            <a href="{{ url_for('auth.forgot_password') }}">Forgot Password?</a>
+            <a href="{{ url_for('auth.register') }}">Create account</a>
+        </div>
+    </form>
+</section>
+{% endblock %}
+

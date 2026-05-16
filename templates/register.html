@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="auth-wrap">
+    <form class="glass-form" method="post">
+        <p class="eyebrow">Create recruiter workspace</p>
+        <h1>Register for HireLens AI</h1>
+        <label>Company Name<input name="company_name" required autocomplete="organization"></label>
+        <label>HR Name<input name="hr_name" required autocomplete="name"></label>
+        <label>Email<input type="email" name="email" required autocomplete="email"></label>
+        <label>Password<input type="password" name="password" required autocomplete="new-password"></label>
+        <label>Confirm Password<input type="password" name="confirm_password" required autocomplete="new-password"></label>
+        <button class="btn btn-primary full" type="submit"><i data-lucide="user-plus"></i>Register</button>
+        <p class="form-note">Already have an account? <a href="{{ url_for('auth.login') }}">Login</a></p>
+    </form>
+</section>
+{% endblock %}
+

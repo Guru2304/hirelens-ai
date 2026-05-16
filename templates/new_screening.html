@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="page-head">
+    <div>
+        <p class="eyebrow">New screening session</p>
+        <h1>Start AI Screening</h1>
+        <p class="muted">Define the role, upload resumes, and receive ranked candidates with ATS score breakdowns.</p>
+    </div>
+</section>
+
+<form class="screening-layout" method="post" action="{{ url_for('process_resumes_route') }}" enctype="multipart/form-data" data-processing-form>
+    <section class="panel form-panel">
+        <h2>Job Requirement</h2>
+        <div class="form-grid">
+            <label>Required Role / Position<input name="role" required placeholder="Senior Python Developer"></label>
+            <label>Minimum Experience<input type="number" name="experience_required" min="0" step="0.5" value="0"></label>
+            <label>Number of Openings<input type="number" name="openings" min="1" required placeholder="5"></label>
+            <label class="wide">Required Skills<textarea name="required_skills" required placeholder="Python, Flask, SQL, REST API, Docker"></textarea></label>
+            <label class="wide">Job Description<textarea name="job_description" rows="7" placeholder="Describe responsibilities, domain, seniority, and expectations."></textarea></label>
+        </div>
+    </section>
+
+    <section class="panel upload-panel">
+        <h2>Resume Upload</h2>
+        <label class="drop-zone" for="resumes">
+            <i data-lucide="upload-cloud"></i>
+            <strong>Drag and drop resumes</strong>
+            <span>PDF, DOCX, PNG, JPG, JPEG</span>
+            <em data-file-count>No files selected</em>
+            <input id="resumes" type="file" name="resumes" multiple required accept=".pdf,.docx,.png,.jpg,.jpeg">
+        </label>
+        <button class="btn btn-primary full" type="submit"><i data-lucide="wand-sparkles"></i>Start AI Screening</button>
+    </section>
+</form>
+
+<div class="processing-overlay" data-processing-overlay>
+    <div class="processor">
+        <div class="loader-orbit"></div>
+        <h2>HireLens AI is screening resumes</h2>
+        <p data-processing-message>Extracting resume text</p>
+    </div>
+</div>
+{% endblock %}
+

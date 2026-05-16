@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="page-head">
+    <div>
+        <p class="eyebrow">{{ current_user.company_name }}</p>
+        <h1>Welcome, {{ current_user.hr_name }}</h1>
+        <p class="muted">Launch a new AI screening session or revisit previous candidate rankings.</p>
+    </div>
+    <div class="head-actions">
+        <a class="btn btn-primary" href="{{ url_for('new_screening') }}"><i data-lucide="plus"></i>New ATS Screening</a>
+        <a class="btn btn-ghost" href="{{ url_for('history') }}"><i data-lucide="history"></i>Previous History</a>
+    </div>
+</section>
+
+<section class="stats-grid">
+    <article class="stat"><span>Total Screenings</span><strong>{{ total_screenings }}</strong></article>
+    <article class="stat"><span>Total Candidates Parsed</span><strong>{{ total_candidates }}</strong></article>
+    <article class="stat"><span>Average ATS Score</span><strong>{{ avg_score }}%</strong></article>
+    <article class="stat"><span>Total Shortlisted</span><strong>{{ total_shortlisted }}</strong></article>
+</section>
+
+<section class="panel">
+    <div class="section-title">
+        <h2>Recent Screenings</h2>
+        <a href="{{ url_for('history') }}">View all</a>
+    </div>
+    {% if recent_jobs %}
+        <div class="timeline-list">
+            {% for job in recent_jobs %}
+                <a class="timeline-item" href="{{ url_for('results', job_id=job.id) }}">
+                    <span><i data-lucide="briefcase-business"></i>{{ job.role }}</span>
+                    <small>{{ job.created_at.strftime('%d %b %Y') }} · {{ job.openings }} openings</small>
+                </a>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="empty-state">
+            <i data-lucide="sparkles"></i>
+            <h3>No screenings yet</h3>
+            <p>Create your first job requirement and let HireLens AI rank candidates.</p>
+        </div>
+    {% endif %}
+</section>
+{% endblock %}
+
