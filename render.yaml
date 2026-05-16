@@ -3,7 +3,7 @@ services:
     name: hirelens-ai
     env: python
     buildCommand: pip install -r requirements.txt && python -m spacy download en_core_web_sm
-    startCommand: gunicorn app:app
+    startCommand: gunicorn app:app --timeout 180 --workers 1 --threads 2
     envVars:
       - key: SECRET_KEY
         generateValue: true
@@ -13,4 +13,5 @@ services:
         value: "587"
       - key: MAIL_USE_TLS
         value: "True"
+
 

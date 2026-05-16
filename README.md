@@ -2,7 +2,7 @@
 
 **AI ATS Resume Screening Platform**
 
-HireLens AI is a production-ready Flask web application for HR teams and recruiters. It lets recruiters register, log in, create job screening sessions, upload multiple resumes, parse candidate data, calculate ATS match percentages with pretrained NLP models, rank candidates, shortlist the top candidates by openings, export reports, and revisit previous screening history.
+HireLens AI is a production-ready Flask web application for HR teams and recruiters. It lets recruiters register, log in, create job screening sessions, upload multiple resumes, parse candidate data, calculate ATS match percentages with lightweight NLP similarity, rank candidates, shortlist the top candidates by openings, export reports, and revisit previous screening history.
 
 ## Features
 
@@ -12,7 +12,7 @@ HireLens AI is a production-ready Flask web application for HR teams and recruit
 - Multiple resume upload for PDF, DOCX, PNG, JPG, and JPEG
 - Temporary file storage only, followed by parsing and deletion
 - Candidate extraction for name, email, phone, skills, experience, education, and links
-- ATS scoring with skills, semantic similarity, experience, and bonus skill weights
+- ATS scoring with skills match, TF-IDF text similarity, experience, and bonus skill weights
 - Shortlisting based on ATS score and required openings
 - Account-specific dashboard and screening history
 - CSV and Excel exports for all candidates and shortlisted candidates
@@ -22,10 +22,16 @@ HireLens AI is a production-ready Flask web application for HR teams and recruit
 
 - **Backend:** Python, Flask, Flask-SQLAlchemy, Flask-Login, Flask-Mail, Werkzeug, python-dotenv
 - **Parsing:** PyMuPDF, python-docx, pytesseract, Pillow
-- **NLP / AI:** spaCy `en_core_web_sm`, Sentence Transformers `all-MiniLM-L6-v2`, scikit-learn cosine similarity
+- **NLP / AI:** spaCy `en_core_web_sm`, scikit-learn TF-IDF, cosine similarity
 - **Export:** pandas, openpyxl
 - **Database:** SQLite locally, configurable for PostgreSQL with `DATABASE_URL`
 - **Deployment:** gunicorn, Render-ready `Procfile` and `render.yaml`
+
+## Render Free Hosting Mode
+
+Render Free plans have limited memory. To avoid worker SIGKILL errors during resume processing, HireLens AI uses lightweight TF-IDF similarity from scikit-learn instead of `sentence-transformers`, `transformers`, or `torch` at runtime.
+
+Transformer-based semantic matching can be added later for paid hosting or servers with higher RAM, but it is intentionally excluded from the free-hosting requirements to keep memory usage low.
 
 ## Folder Structure
 
@@ -86,11 +92,11 @@ Open [http://127.0.0.1:5000](http://127.0.0.1:5000).
 Total ATS score is capped at 100:
 
 - Skills Match: 40%
-- Semantic Similarity: 30%
+- Text Similarity: 30%
 - Experience Match: 20%
 - Bonus Skills: 10%
 
-The app combines the job role, required skills, required experience, and job description into one job profile. It compares that against the extracted resume profile using `all-MiniLM-L6-v2` sentence embeddings and cosine similarity. Skill detection combines keyword matching from the skills database with semantic matching. The final status is:
+The app combines the job role, required skills, required experience, and job description into one job profile. It compares that against the extracted resume profile using scikit-learn `TfidfVectorizer` and cosine similarity. Skill detection combines exact keyword matching from the skills database with lightweight TF-IDF assisted matching. The final status is:
 
 - 85+ Excellent Match
 - 70-84 Good Match
@@ -106,14 +112,15 @@ Passwords are hashed with Werkzeug. Flask-Login protects dashboard, screening, r
 - PDF resumes are parsed with PyMuPDF.
 - DOCX resumes are parsed with python-docx.
 - Image resumes are parsed with Pillow and pytesseract OCR.
-- Original uploaded files are temporarily saved, parsed, processed, and deleted. Only structured candidate data is stored.
+- Each resume is processed independently, so one failed resume does not crash the whole screening session.
+- Original uploaded files are temporarily saved, parsed, processed, and deleted in cleanup logic even when parsing fails. Only structured candidate data is stored.
 
 ## Deploy on Render
 
 Use the included `render.yaml`, or configure manually:
 
 - Build command: `pip install -r requirements.txt && python -m spacy download en_core_web_sm`
-- Start command: `gunicorn app:app`
+- Start command: `gunicorn app:app --timeout 180 --workers 1 --threads 2`
 - Add all required environment variables in Render.
 - For production persistence, configure PostgreSQL and set `DATABASE_URL`.
 
@@ -121,6 +128,7 @@ Use the included `render.yaml`, or configure manually:
 
 - Background task queue for very large resume batches
 - Cloud object storage for temporary processing in distributed deployments
+- Transformer-based semantic matching for paid hosting or higher RAM servers
 - Admin analytics and role-based permissions
 - Advanced duplicate candidate detection
 - More export templates and branded PDF reports
@@ -128,4 +136,3 @@ Use the included `render.yaml`, or configure manually:
 ## Screenshots
 
 Add screenshots here after running the application locally.
-

@@ -9,9 +9,9 @@ python-docx
 pytesseract
 Pillow
 spacy
-sentence-transformers
 scikit-learn
 pandas
 openpyxl
 gunicorn
+
 

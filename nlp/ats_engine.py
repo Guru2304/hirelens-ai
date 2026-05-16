@@ -1,5 +1,5 @@
 from config.constants import ATS_THRESHOLDS
-from nlp.embedding_engine import semantic_similarity
+from nlp.embedding_engine import calculate_text_similarity
 from nlp.skill_matcher import required_skill_report
 from nlp.skills_db import BONUS_SKILLS
 
@@ -21,8 +21,8 @@ def calculate_ats(job, candidate, resume_text):
 
     job_text = f"{job.role} {job.required_skills} {job.experience_required} years {job.job_description}"
     candidate_text = " ".join(candidate.get("skills", [])) + f" {candidate.get('experience', 0)} years " + (resume_text or "")
-    semantic = max(0.0, min(1.0, semantic_similarity(job_text, candidate_text)))
-    semantic_score = semantic * 30
+    text_similarity = calculate_text_similarity(job_text, candidate_text)
+    semantic_score = text_similarity * 30
 
     required_exp = float(job.experience_required or 0)
     candidate_exp = float(candidate.get("experience") or 0)
@@ -48,4 +48,3 @@ def calculate_ats(job, candidate, resume_text):
         "missing_skills": missing,
         "status": status_for_score(total),
     }
-

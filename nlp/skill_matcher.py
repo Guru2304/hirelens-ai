@@ -1,9 +1,8 @@
 import re
 
 from config.constants import SKILL_MATCHING_THRESHOLD
-from nlp.embedding_engine import encode_texts
+from nlp.embedding_engine import calculate_text_similarity
 from nlp.skills_db import ALL_SKILLS
-from sklearn.metrics.pairwise import cosine_similarity
 
 
 def normalize_skill(skill):
@@ -28,11 +27,13 @@ def exact_skill_matches(text):
 def semantic_skill_matches(sentences):
     if not sentences:
         return []
+    resume_context = " ".join(sentences[:80])
     try:
-        skill_embeddings = encode_texts(ALL_SKILLS)
-        sentence_embeddings = encode_texts(sentences[:80])
-        scores = cosine_similarity(skill_embeddings, sentence_embeddings).max(axis=1)
-        return [ALL_SKILLS[index] for index, score in enumerate(scores) if score >= SKILL_MATCHING_THRESHOLD]
+        return [
+            skill
+            for skill in ALL_SKILLS
+            if calculate_text_similarity(skill, resume_context) >= SKILL_MATCHING_THRESHOLD
+        ]
     except Exception:
         return []
 
@@ -49,4 +50,5 @@ def required_skill_report(required_skills, detected_skills):
     matched = [skill for skill in required if normalize_skill(skill) in detected_norm]
     missing = [skill for skill in required if normalize_skill(skill) not in detected_norm]
     return required, matched, missing
+
 
