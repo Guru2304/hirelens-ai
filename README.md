@@ -136,3 +136,28 @@ Use the included `render.yaml`, or configure manually:
 ## Screenshots
 
 Add screenshots here after running the application locally.
+## Screenshots
+
+### 1. Homepage
+![HireLens AI Screenshot 1](images/Screenshot%202026-05-21%20175200.png)
+
+### 2. Resume Upload / Input Screen
+![HireLens AI Screenshot 2](images/Screenshot%202026-05-21%20175236.png)
+
+### 3. Parsed Candidate Result
+![HireLens AI Screenshot 3](images/Screenshot%202026-05-21%20175256.png)
+
+### 4. ATS Matching Result
+![HireLens AI Screenshot 4](images/Screenshot%202026-05-21%20175315.png)
+
+### 5. Dashboard View
+![HireLens AI Screenshot 5](images/Screenshot%202026-05-21%20175553.png)
+
+### 6. Candidate Details
+![HireLens AI Screenshot 6](images/Screenshot%202026-05-21%20175606.png)
+
+### 7. Result Table
+![HireLens AI Screenshot 7](images/Screenshot%202026-05-21%20175739.png)
+
+### 8. Final Output
+![HireLens AI Screenshot 8](images/Screenshot%202026-05-21%20175755.png)
