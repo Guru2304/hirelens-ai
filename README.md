@@ -136,3 +136,11 @@ Use the included `render.yaml`, or configure manually:
 ## Screenshots
 
 Add screenshots here after running the application locally.
+images\Screenshot 2026-05-21 175200.png
+images\Screenshot 2026-05-21 175236.png
+images\Screenshot 2026-05-21 175256.png
+images\Screenshot 2026-05-21 175315.png
+images\Screenshot 2026-05-21 175553.png
+images\Screenshot 2026-05-21 175606.png
+images\Screenshot 2026-05-21 175739.png
+images\Screenshot 2026-05-21 175755.png
